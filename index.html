@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Colegio Montano - Interactive Study Guide: Class 3 - Historical Antecedents I</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts: Nunito & Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            montano: {
+              blue: '#1269A8',
+              yellow: '#F7D615',
+              teal: '#54887D',
+              lightBlue: '#88B5C7',
+              olive: '#A6B046',
+              bgSoft: '#F2F5E9'
+            }
+          },
+          fontFamily: {
+            sans: ['Nunito', 'Segoe UI', 'Tahoma', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    :root {
+      --montano-blue: #1269A8;
+      --montano-yellow: #F7D615;
+      --montano-teal: #54887D;
+      --montano-lightblue: #88B5C7;
+      --montano-olive: #A6B046;
+      --montano-bgsoft: #F2F5E9;
+    }
+
+    body {
+      background-color: #E2E8F0;
+      font-family: 'Nunito', sans-serif;
+      color: #334155;
+    }
+
+    /* Whiteboard Frame Styling */
+    .whiteboard-frame {
+      background-color: var(--montano-bgsoft);
+      border: 12px solid #CBD5E1;
+      border-radius: 24px;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1), inset 0 0 15px rgba(0,0,0,0.05);
+      transition: all 0.3s ease;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #E2E8F0;
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--montano-lightblue);
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--montano-blue);
+    }
+
+    .tab-btn.active {
+      background-color: var(--montano-blue);
+      color: #FFFFFF;
+      border-bottom: 4px solid var(--montano-yellow);
+      transform: translateY(-2px);
+    }
+
+    .badge-time {
+      background-color: #E0F2FE;
+      color: #0369A1;
+      border: 1px solid #BAE6FD;
+    }
+  </style>
+</head>
+<body class="p-2 md:p-6 min-h-screen flex flex-col justify-center items-center">
+
+  <!-- Main Container / Digital Whiteboard Frame -->
+  <div id="whiteboard" class="whiteboard-frame w-full max-w-7xl mx-auto min-h-[90vh] flex flex-col overflow-hidden relative">
+    
+    <!-- Header Bar -->
+    <header class="bg-white border-b-2 border-slate-200 p-4 md:px-8 flex flex-wrap justify-between items-center gap-4">
+      <div class="flex items-center space-x-4">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQyEop0yf6lZ7Jk9MILZxF1rBj4Oqs5esyhIQ&s" 
+             alt="Colegio Montano Logo" 
+             class="h-14 w-auto object-contain drop-shadow-sm"
+             onerror="this.src='https://placehold.co/150x60/1269A8/FFFFFF?text=Colegio+Montano'">
+        <div>
+          <h1 class="text-xl md:text-2xl font-extrabold text-montano-blue tracking-tight">COLEGIO MONTANO</h1>
+          <p class="text-xs md:text-sm font-bold text-montano-teal flex items-center gap-2">
+            <span>Psychology Study Guide</span> • <span>Class 3: Historical Antecedents I</span>
+          </p>
+        </div>
+      </div>
+
+      <div class="flex items-center space-x-3">
+        <div class="hidden sm:block text-right">
+          <span class="block text-xs font-semibold text-slate-500">Target Grade</span>
+          <span class="inline-block bg-montano-yellow/30 text-slate-800 text-xs px-2.5 py-0.5 rounded-full font-bold">11th Grade / 4th High School</span>
+        </div>
+        <button onclick="toggleFullscreen()" class="bg-montano-blue hover:bg-montano-teal text-white p-3 rounded-xl shadow transition duration-200 flex items-center gap-2 text-sm font-bold" title="Toggle Fullscreen">
+          <i class="fa-solid fa-expand"></i>
+          <span class="hidden md:inline">Fullscreen</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Interactive Horizontal Tabs Navigation -->
+    <nav class="bg-slate-100 border-b border-slate-300 px-4 pt-3 flex space-x-2 overflow-x-auto text-sm font-bold">
+      <button onclick="switchTab('tab1')" id="btn-tab1" class="tab-btn active px-4 py-3 rounded-t-xl transition duration-200 flex items-center gap-2 whitespace-nowrap text-slate-700">
+        <i class="fa-solid fa-brain text-montano-yellow"></i> 1. Mind & Body Debate (10m)
+      </button>
+      <button onclick="switchTab('tab2')" id="btn-tab2" class="tab-btn px-4 py-3 rounded-t-xl transition duration-200 flex items-center gap-2 whitespace-nowrap text-slate-700">
+        <i class="fa-solid fa-book-open text-montano-yellow"></i> 2. Philosophical Roots (15m)
+      </button>
+      <button onclick="switchTab('tab3')" id="btn-tab3" class="tab-btn px-4 py-3 rounded-t-xl transition duration-200 flex items-center gap-2 whitespace-nowrap text-slate-700">
+        <i class="fa-solid fa-flask text-montano-yellow"></i> 3. Wundt & Leipzig 1879 (15m)
+      </button>
+      <button onclick="switchTab('tab4')" id="btn-tab4" class="tab-btn px-4 py-3 rounded-t-xl transition duration-200 flex items-center gap-2 whitespace-nowrap text-slate-700">
+        <i class="fa-solid fa-timeline text-montano-yellow"></i> 4. Interactive Timeline (15m)
+      </button>
+      <button onclick="switchTab('tab5')" id="btn-tab5" class="tab-btn px-4 py-3 rounded-t-xl transition duration-200 flex items-center gap-2 whitespace-nowrap text-slate-700">
+        <i class="fa-solid fa-pen-nib text-montano-yellow"></i> 5. Synthesis Exit Ticket (5m)
+      </button>
+    </nav>
+
+    <!-- Main Content Display Container -->
+    <main class="flex-1 p-4 md:p-8 overflow-y-auto">
+
+      <!-- TAB 1: MIND & BODY DEBATE (10 MIN) -->
+      <section id="tab1" class="tab-content block space-y-6">
+        <div class="bg-white p-6 rounded-2xl border-l-8 border-montano-blue shadow-sm flex flex-wrap justify-between items-center gap-4">
+          <div>
+            <span class="badge-time text-xs px-3 py-1 rounded-full font-bold uppercase tracking-wider"><i class="fa-regular fa-clock mr-1"></i> 10 Minutes</span>
+            <h2 class="text-2xl font-bold text-montano-blue mt-2">Guiding Question: Is the Mind Separate from the Body?</h2>
+            <p class="text-slate-600 text-sm">Explore ancient philosophical questions about physical matter versus mental existence before scientific psychology emerged.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-bold text-slate-500">Audio Helper:</span>
+            <button onclick="speakText('Is the mind separate from the body? Dualism argues they are distinct, while Monism claims mind and body are one single substance.')" class="bg-montano-yellow/30 hover:bg-montano-yellow text-slate-800 text-xs px-3 py-1.5 rounded-full font-bold flex items-center gap-1 transition">
+              <i class="fa-solid fa-volume-high"></i> Listen Prompt
+            </button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Poll / Debate Card 1: Dualism -->
+          <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+            <div class="flex justify-between items-center">
+              <span class="w-10 h-10 rounded-xl bg-montano-blue text-white flex items-center justify-center font-bold text-lg"><i class="fa-solid fa-split"></i></span>
+              <span class="text-xs font-extrabold text-montano-blue uppercase tracking-wider">Philosophical Stance A</span>
+            </div>
+            <h3 class="text-xl font-bold text-montano-blue">Dualism</h3>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              The mind (non-physical soul, consciousness) and the body (physical matter, brain, organs) are <strong>two separate entities</strong> that interact with one another.
+            </p>
+            <div class="bg-montano-bgSoft p-3 rounded-xl text-xs text-slate-700 space-y-1 border border-slate-200">
+              <span class="font-bold block text-slate-800"><i class="fa-solid fa-quote-left text-montano-teal mr-1"></i> Key Question:</span>
+              <span>If your body dies, does your mind or soul continue to exist independently?</span>
+            </div>
+            <button onclick="selectStance('Dualism')" class="w-full bg-slate-100 hover:bg-montano-blue hover:text-white text-slate-800 font-bold py-2.5 rounded-xl text-xs transition border border-slate-300">
+              Select Dualism Stance
+            </button>
+          </div>
+
+          <!-- Poll / Debate Card 2: Monism -->
+          <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+            <div class="flex justify-between items-center">
+              <span class="w-10 h-10 rounded-xl bg-montano-teal text-white flex items-center justify-center font-bold text-lg"><i class="fa-solid fa-circle-nodes"></i></span>
+              <span class="text-xs font-extrabold text-montano-teal uppercase tracking-wider">Philosophical Stance B</span>
+            </div>
+            <h3 class="text-xl font-bold text-montano-teal">Monism</h3>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              The mind and physical body are <strong>aspects of the same unified reality</strong>. Thoughts and emotions are purely biological chemical and electrical processes of the physical brain.
+            </p>
+            <div class="bg-montano-bgSoft p-3 rounded-xl text-xs text-slate-700 space-y-1 border border-slate-200">
+              <span class="font-bold block text-slate-800"><i class="fa-solid fa-quote-left text-montano-teal mr-1"></i> Key Question:</span>
+              <span>Are your thoughts simply electrical impulses fired across your brain's neurons?</span>
+            </div>
+            <button onclick="selectStance('Monism')" class="w-full bg-slate-100 hover:bg-montano-teal hover:text-white text-slate-800 font-bold py-2.5 rounded-xl text-xs transition border border-slate-300">
+              Select Monism Stance
+            </button>
+          </div>
+        </div>
+
+        <!-- Reflection Box -->
+        <div id="stance-result" class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hidden space-y-2">
+          <h4 class="text-sm font-bold text-montano-blue flex items-center gap-2">
+            <i class="fa-solid fa-lightbulb text-montano-yellow"></i> Your Position & Historical Relevance
+          </h4>
+          <p id="stance-text" class="text-xs text-slate-700 leading-relaxed"></p>
+        </div>
+      </section>
+
+      <!-- TAB 2: PHILOSOPHICAL ROOTS (15 MIN) -->
+      <section id="tab2" class="tab-content hidden space-y-6">
+        <div class="bg-white p-6 rounded-2xl border-l-8 border-montano-teal shadow-sm flex flex-wrap justify-between items-center gap-4">
+          <div>
+            <span class="badge-time text-xs px-3 py-1 rounded-full font-bold uppercase tracking-wider"><i class="fa-regular fa-clock mr-1"></i> 15 Minutes</span>
+            <h2 class="text-2xl font-bold text-montano-blue mt-2">Philosophical Antecedents: Rationalism vs. Empiricism</h2>
+            <p class="text-slate-600 text-sm">Key thinkers who shifted human understanding from mystical explanations to structured philosophical inquiry.</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Rene Descartes -->
+          <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+            <div class="flex items-center justify-between border-b pb-3">
+              <div>
+                <h3 class="text-lg font-bold text-montano-blue">René Descartes (1596–1650)</h3>
+                <span class="text-xs text-slate-500 font-semibold">French Philosopher & Mathematician</span>
+              </div>
+              <button onclick="speakText('René Descartes proposed interactive dualism. He famously declared Cogito ergo sum: I think, therefore I am.')" class="text-montano-blue hover:text-montano-teal text-base" title="Listen Summary">
+                <i class="fa-solid fa-volume-high"></i>
+              </button>
+            </div>
+            
+            <ul class="text-xs space-y-2 text-slate-700">
+              <li class="flex items-start gap-2">
+                <i class="fa-solid fa-check text-montano-blue mt-0.5"></i>
+                <span><strong>Interactive Dualism:</strong> Mind and body are separate, but interact through the pineal gland in the brain.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <i class="fa-solid fa-check text-montano-blue mt-0.5"></i>
+                <span><strong>Rationalism:</strong> Knowledge comes from reasoning, logic, and innate ideas rather than sensory experience alone.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <i class="fa-solid fa-check text-montano-blue mt-0.5"></i>
+                <span><strong>Famous Maxim:</strong> <em>"Cogito, ergo sum"</em> ("I think, therefore I am").</span>
+              </li>
+            </ul>
+
+            <div class="bg-montano-bgSoft p-3 rounded-xl border border-slate-200 text-xs">
+              <span class="font-bold text-slate-800 block mb-1">Impact on Psychology:</span>
+              <p class="text-slate-600">Framed the brain and nervous system as mechanisms subject to physical study.</p>
+            </div>
+          </div>
+
+          <!-- John Locke -->
+          <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+            <div class="flex items-center justify-between border-b pb-3">
+              <div>
+                <h3 class="text-lg font-bold text-montano-teal">John Locke (1632–1704)</h3>
+                <span class="text-xs text-slate-500 font-semibold">English Philosopher</span>
+              </div>
+              <button onclick="speakText('John Locke introduced the concept of Tabula Rasa, stating the mind is a blank slate filled through sensory experience.')" class="text-montano-teal hover:text-montano-blue text-base" title="Listen Summary">
+                <i class="fa-solid fa-volume-high"></i>
+              </button>
+            </div>
+            
+            <ul class="text-xs space-y-2 text-slate-700">
+              <li class="flex items-start gap-2">
+                <i class="fa-solid fa-check text-montano-teal mt-0.5"></i>
+                <span><strong>Empiricism:</strong> Knowledge originates exclusively from sensory experience and observable evidence.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <i class="fa-solid fa-check text-montano-teal mt-0.5"></i>
+                <span><strong>Tabula Rasa:</strong> The human mind at birth is a "blank slate" written upon by life experiences.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <i class="fa-solid fa-check text-montano-teal mt-0.5"></i>
+                <span><strong>Rejection of Innate Ideas:</strong> We are born without pre-programmed knowledge.</span>
+              </li>
+            </ul>
+
+            <div class="bg-montano-bgSoft p-3 rounded-xl border border-slate-200 text-xs">
+              <span class="font-bold text-slate-800 block mb-1">Impact on Psychology:</span>
+              <p class="text-slate-600">Laid the groundwork for scientific observation, experimentation, and behavioral learning theories.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Self-Check Knowledge Cards -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+          <h3 class="text-base font-bold text-montano-blue flex items-center gap-2">
+            <i class="fa-solid fa-circle-question text-montano-yellow"></i> Concept Verification Game
+          </h3>
+          <p class="text-xs text-slate-600">Match the statement to the correct philosopher or school of thought:</p>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-2 text-xs">
+              <p class="font-bold text-slate-800">"We are born as blank slates shaped entirely by our environment."</p>
+              <div class="flex gap-2">
+                <button onclick="checkPhilAnswer(1, 'Locke')" class="px-3 py-1 bg-montano-blue text-white rounded-lg hover:bg-montano-teal">Locke</button>
+                <button onclick="checkPhilAnswer(1, 'Descartes')" class="px-3 py-1 bg-slate-200 text-slate-700 rounded-lg hover:bg-slate-300">Descartes</button>
+              </div>
+              <p id="phil-fb-1" class="font-bold hidden"></p>
+            </div>
+
+            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-2 text-xs">
+              <p class="font-bold text-slate-800">"The non-physical mind interacts with the physical body through the brain."</p>
+              <div class="flex gap-2">
+                <button onclick="checkPhilAnswer(2, 'Descartes')" class="px-3 py-1 bg-montano-blue text-white rounded-lg hover:bg-montano-teal">Descartes</button>
+                <button onclick="checkPhilAnswer(2, 'Locke')" class="px-3 py-1 bg-slate-200 text-slate-700 rounded-lg hover:bg-slate-300">Locke</button>
+              </div>
+              <p id="phil-fb-2" class="font-bold hidden"></p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 3: WUNDT & LEIPZIG 1879 (15 MIN) -->
+      <section id="tab3" class="tab-content hidden space-y-6">
+        <div class="bg-white p-6 rounded-2xl border-l-8 border-montano-yellow shadow-sm flex flex-wrap justify-between items-center gap-4">
+          <div>
+            <span class="badge-time text-xs px-3 py-1 rounded-full font-bold uppercase tracking-wider"><i class="fa-regular fa-clock mr-1"></i> 15 Minutes</span>
+            <h2 class="text-2xl font-bold text-montano-blue mt-2">Wilhelm Wundt & The Birth of Scientific Psychology (1879)</h2>
+            <p class="text-slate-600 text-sm">How psychology transitioned from philosophy to an independent laboratory science in Leipzig, Germany.</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <!-- Left Column: Core Theory -->
+          <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4 lg:col-span-1">
+            <h3 class="text-base font-bold text-montano-blue flex items-center gap-2">
+              <i class="fa-solid fa-microscope text-montano-yellow"></i> Wilhelm Wundt (1832–1920)
+            </h3>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              Known as the <strong>"Father of Experimental Psychology."</strong> In <strong>1879</strong>, at the University of Leipzig (Germany), Wundt established the world's <em>first psychological laboratory</em>.
+            </p>
+
+            <div class="bg-montano-bgSoft p-3.5 rounded-xl border border-slate-200 space-y-2 text-xs">
+              <span class="font-extrabold text-montano-blue block">Key Method: Introspection</span>
+              <p class="text-slate-700">
+                Self-observation where trained participants described their immediate conscious experiences (sensations, feelings) when exposed to sensory stimuli (e.g., a metronome ticking).
+              </p>
+            </div>
+
+            <div class="bg-montano-bgSoft p-3.5 rounded-xl border border-slate-200 space-y-2 text-xs">
+              <span class="font-extrabold text-montano-teal block">First School: Structuralism</span>
+              <p class="text-slate-700">
+                Formalized by Wundt's student Edward Titchener, aiming to break down conscious mind into basic "structures" or components.
+              </p>
+            </div>
+          </div>
+
+          <!-- Middle & Right Column: Introspection Voice/Text Simulator & Dashboard -->
+          <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4 lg:col-span-2 flex flex-col justify-between">
+            <div>
+              <div class="flex justify-between items-center border-b pb-3 mb-3">
+                <h3 class="text-base font-bold text-montano-blue flex items-center gap-2">
+                  <i class="fa-solid fa-stopwatch text-montano-yellow"></i> Leipzig 1879 Introspection Simulator
+                </h3>
+                <span class="text-[11px] font-bold bg-emerald-100 text-emerald-800 px-2.5 py-0.5 rounded-full"><i class="fa-solid fa-headset mr-1"></i> Interactive Experiment</span>
+              </div>
+
+              <p class="text-xs text-slate-600 mb-3">
+                Imagine Wundt sounds a metronome beat. Report your raw sensory observations without naming object labels. Describe pitch, rhythm, or emotional state:
+              </p>
+
+              <!-- Voice Input Controls -->
+              <div class="flex flex-wrap items-center gap-3 mb-3">
+                <button onclick="toggleSpeechRecognition()" id="mic-btn" class="bg-montano-blue hover:bg-montano-teal text-white font-bold px-4 py-2.5 rounded-xl text-xs transition flex items-center gap-2 shadow">
+                  <i class="fa-solid fa-microphone"></i>
+                  <span id="mic-btn-text">Start Speech Input</span>
+                </button>
+                <span id="speech-status" class="text-xs font-semibold text-slate-500 italic">Microphone ready</span>
+              </div>
+
+              <!-- Input Area -->
+              <textarea id="voice-transcript-input" rows="3" placeholder="Describe your immediate sensory response (e.g., 'I feel a fast rhythmic auditory vibration causing alertness...')" 
+                        class="w-full p-3 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-montano-blue outline-none mb-3"></textarea>
+
+              <button onclick="evaluateIntrospection()" class="w-full bg-montano-teal hover:bg-montano-blue text-white font-bold py-2.5 rounded-xl text-xs transition shadow flex items-center justify-center gap-2">
+                <i class="fa-solid fa-chart-line"></i> Analyze Introspection Response & Update Dashboard
+              </button>
+            </div>
+
+            <!-- Live Performance Dashboard -->
+            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3 mt-4">
+              <h4 class="text-xs font-extrabold uppercase tracking-wider text-slate-600 flex items-center gap-2">
+                <i class="fa-solid fa-gauge-high text-montano-blue"></i> Introspection Dashboard
+              </h4>
+
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <!-- Metric 1 -->
+                <div class="bg-white p-2.5 rounded-lg border border-slate-200 text-center space-y-1">
+                  <span class="text-[10px] font-bold text-slate-500 uppercase block">Descriptive Precision</span>
+                  <span id="score-clarity" class="text-lg font-extrabold text-montano-blue">0%</span>
+                  <div class="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
+                    <div id="bar-clarity" class="bg-montano-blue h-full w-0 transition-all duration-500"></div>
+                  </div>
+                </div>
+
+                <!-- Metric 2 -->
+                <div class="bg-white p-2.5 rounded-lg border border-slate-200 text-center space-y-1">
+                  <span class="text-[10px] font-bold text-slate-500 uppercase block">Structuralist Terminology</span>
+                  <span id="score-accuracy" class="text-lg font-extrabold text-montano-teal">0%</span>
+                  <div class="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
+                    <div id="bar-accuracy" class="bg-montano-teal h-full w-0 transition-all duration-500"></div>
+                  </div>
+                </div>
+
+                <!-- Metric 3 -->
+                <div class="bg-white p-2.5 rounded-lg border border-slate-200 text-center space-y-1">
+                  <span class="text-[10px] font-bold text-slate-500 uppercase block">Scientific Objectivity</span>
+                  <span id="score-etiquette" class="text-lg font-extrabold text-montano-olive">0%</span>
+                  <div class="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
+                    <div id="bar-etiquette" class="bg-montano-olive h-full w-0 transition-all duration-500"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Keywords Detected -->
+              <div>
+                <span class="text-[11px] font-bold text-slate-600 mr-2">Key Sensation Terms:</span>
+                <div id="detected-keywords" class="inline-flex flex-wrap gap-1 mt-1">
+                  <span class="text-[10px] bg-slate-200 text-slate-600 px-2 py-0.5 rounded-full">Awaiting analysis...</span>
+                </div>
+              </div>
+
+              <!-- AI Feedback Box -->
+              <div id="ai-feedback-container" class="bg-white p-3 rounded-lg border border-montano-lightblue/40 text-xs text-slate-700 hidden">
+                <p id="ai-feedback-text"></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 4: INTERACTIVE COLLABORATIVE TIMELINE (15 MIN) -->
+      <section id="tab4" class="tab-content hidden space-y-6">
+        <div class="bg-white p-6 rounded-2xl border-l-8 border-montano-olive shadow-sm flex flex-wrap justify-between items-center gap-4">
+          <div>
+            <span class="badge-time text-xs px-3 py-1 rounded-full font-bold uppercase tracking-wider"><i class="fa-regular fa-clock mr-1"></i> 15 Minutes</span>
+            <h2 class="text-2xl font-bold text-montano-blue mt-2">Interactive Historical Timeline</h2>
+            <p class="text-slate-600 text-sm">Trace the major milestones from classical ancient philosophy to Wundt's experimental laboratory in 1879.</p>
+          </div>
+        </div>
+
+        <!-- Interactive Milestone Stepper -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-6">
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <button onclick="setTimelineStep(1)" id="time-step-1" class="p-3 rounded-xl border text-center transition font-bold text-xs bg-montano-blue text-white">
+              <span class="block text-[10px] opacity-80 uppercase">Ancient Greece</span>
+              400 BCE: Mind & Soul
+            </button>
+            <button onclick="setTimelineStep(2)" id="time-step-2" class="p-3 rounded-xl border text-center transition font-bold text-xs bg-slate-100 text-slate-700 hover:bg-slate-200">
+              <span class="block text-[10px] opacity-80 uppercase">1641</span>
+              Descartes: Dualism
+            </button>
+            <button onclick="setTimelineStep(3)" id="time-step-3" class="p-3 rounded-xl border text-center transition font-bold text-xs bg-slate-100 text-slate-700 hover:bg-slate-200">
+              <span class="block text-[10px] opacity-80 uppercase">1690</span>
+              Locke: Tabula Rasa
+            </button>
+            <button onclick="setTimelineStep(4)" id="time-step-4" class="p-3 rounded-xl border text-center transition font-bold text-xs bg-slate-100 text-slate-700 hover:bg-slate-200">
+              <span class="block text-[10px] opacity-80 uppercase">1879</span>
+              Leipzig Laboratory
+            </button>
+          </div>
+
+          <!-- Timeline Detail Box -->
+          <div id="timeline-detail" class="bg-montano-bgSoft p-6 rounded-xl border border-slate-200 space-y-3">
+            <div class="flex justify-between items-center">
+              <h3 id="timeline-title" class="text-lg font-bold text-montano-blue">400 BCE: Ancient Greece — Socrates, Plato & Aristotle</h3>
+              <button onclick="speakCurrentTimeline()" class="text-montano-blue hover:text-montano-teal text-sm"><i class="fa-solid fa-volume-high"></i></button>
+            </div>
+            <p id="timeline-desc" class="text-xs text-slate-700 leading-relaxed">
+              Socrates and Plato argued that knowledge is innate and that the mind is separable from the body. Aristotle later proposed that knowledge grows from experiences stored in our memories.
+            </p>
+            <div id="timeline-impact" class="bg-white p-3 rounded-lg border border-slate-200 text-xs font-medium text-slate-800">
+              <strong>Key Contribution:</strong> Posed the earliest structured questions regarding human nature, memory, and perception.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 5: INDIVIDUAL SYNTHESIS EXIT TICKET (5 MIN) -->
+      <section id="tab5" class="tab-content hidden space-y-6">
+        <div class="bg-white p-6 rounded-2xl border-l-8 border-montano-blue shadow-sm flex flex-wrap justify-between items-center gap-4">
+          <div>
+            <span class="badge-time text-xs px-3 py-1 rounded-full font-bold uppercase tracking-wider"><i class="fa-regular fa-clock mr-1"></i> 5 Minutes</span>
+            <h2 class="text-2xl font-bold text-montano-blue mt-2">Class 3 Synthesis Exit Ticket</h2>
+            <p class="text-slate-600 text-sm">Demonstrate your understanding of how psychology evolved from speculative philosophy into an experimental science.</p>
+          </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-6">
+          <form id="exit-ticket-form-c3" onsubmit="submitExitTicketC3(event)" class="space-y-4">
+            
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">1. Explain how John Locke's "Tabula Rasa" concept differs from René Descartes' Rationalism:</label>
+              <textarea id="et3-q1" required rows="2" placeholder="Write your explanation here..." class="w-full p-3 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-montano-blue outline-none"></textarea>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">2. Why is the year 1879 considered the official birth of psychology as an independent science?</label>
+              <textarea id="et3-q2" required rows="2" placeholder="Mention Leipzig, Wundt, and experimental methodology..." class="w-full p-3 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-montano-teal outline-none"></textarea>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">3. What was Wundt's primary research method, and what was its major limitation?</label>
+              <input type="text" id="et3-q3" required placeholder="e.g., Introspection; limitation was subjectivity." class="w-full p-3 rounded-xl border border-slate-300 text-xs">
+            </div>
+
+            <button type="submit" class="w-full bg-montano-blue hover:bg-montano-teal text-white font-bold py-3 rounded-xl transition duration-200 shadow text-sm flex items-center justify-center gap-2">
+              <i class="fa-solid fa-paper-plane"></i> Submit Class 3 Synthesis
+            </button>
+          </form>
+
+          <!-- Feedback Box -->
+          <div id="exit-feedback-c3" class="hidden bg-montano-bgSoft p-5 rounded-xl border border-montano-olive/40 space-y-2">
+            <h4 class="text-sm font-bold text-montano-blue flex items-center gap-2">
+              <i class="fa-solid fa-circle-check text-emerald-600"></i> Synthesis Submitted Successfully!
+            </h4>
+            <p id="exit-feedback-msg-c3" class="text-xs text-slate-700 leading-relaxed"></p>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Footer Bar -->
+    <footer class="bg-white border-t border-slate-200 p-3 px-6 text-center text-xs text-slate-500 flex justify-between items-center">
+      <span>&copy; Colegio Montano - Social Sciences Department</span>
+      <span class="font-bold text-montano-blue">Psychology Course (11th Grade)</span>
+    </footer>
+
+  </div>
+
+  <!-- JavaScript Logic -->
+  <script>
+    /* Tab Switcher Logic */
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      
+      document.getElementById(tabId).classList.remove('hidden');
+      document.getElementById('btn-' + tabId).classList.add('active');
+    }
+
+    /* Fullscreen API Toggle */
+    function toggleFullscreen() {
+      const whiteboard = document.getElementById('whiteboard');
+      if (!document.fullscreenElement) {
+        whiteboard.requestFullscreen().catch(err => {
+          alert(`Error attempting to enable fullscreen: ${err.message}`);
+        });
+      } else {
+        document.exitFullscreen();
+      }
+    }
+
+    /* Text-to-Speech Helper */
+    function speakText(text) {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'en-US';
+        utterance.rate = 0.95;
+        window.speechSynthesis.speak(utterance);
+      } else {
+        alert("Text-to-Speech is not supported in this browser.");
+      }
+    }
+
+    /* Tab 1 Stance Selection */
+    function selectStance(stance) {
+      const resBox = document.getElementById('stance-result');
+      const resText = document.getElementById('stance-text');
+      resBox.classList.remove('hidden');
+
+      if (stance === 'Dualism') {
+        resText.innerHTML = `You chose <strong>Dualism</strong>. Historically, René Descartes advocated dualism, arguing the mind is a non-physical substance that communicates with the body. Modern neuroscience leans towards monism, yet dualism shaped early debates on consciousness!`;
+        speakText("You selected Dualism. Descartes believed mind and body were distinct interacting entities.");
+      } else {
+        resText.innerHTML = `You chose <strong>Monism</strong>. Monism asserts that mental states are biological neural events. This view laid the foundation for biological psychology and modern neuroscience!`;
+        speakText("You selected Monism. Modern neuroscience supports monism by linking mental states directly to brain activity.");
+      }
+    }
+
+    /* Tab 2 Concept Verification */
+    function checkPhilAnswer(qNum, choice) {
+      const fb = document.getElementById(`phil-fb-${qNum}`);
+      fb.classList.remove('hidden');
+      if ((qNum === 1 && choice === 'Locke') || (qNum === 2 && choice === 'Descartes')) {
+        fb.className = "font-bold text-xs text-emerald-600 mt-1";
+        fb.innerText = "Correct! Great understanding of philosophical foundations.";
+      } else {
+        fb.className = "font-bold text-xs text-red-500 mt-1";
+        fb.innerText = "Incorrect. Review the distinction between Rationalism and Empiricism.";
+      }
+    }
+
+    /* Web Speech API Implementation */
+    let recognition;
+    let isRecognizing = false;
+
+    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      recognition = new SpeechRecognition();
+      recognition.continuous = false;
+      recognition.interimResults = false;
+      recognition.lang = 'en-US';
+
+      recognition.onstart = function() {
+        isRecognizing = true;
+        document.getElementById('mic-btn-text').innerText = "Listening...";
+        document.getElementById('mic-btn').classList.replace('bg-montano-blue', 'bg-red-600');
+        document.getElementById('speech-status').innerText = "Speak your sensory observations...";
+      };
+
+      recognition.onresult = function(event) {
+        const transcript = event.results[0][0].transcript;
+        document.getElementById('voice-transcript-input').value = transcript;
+        document.getElementById('speech-status').innerText = "Introspection recorded!";
+      };
+
+      recognition.onerror = function(event) {
+        document.getElementById('speech-status').innerText = "Speech error: " + event.error;
+      };
+
+      recognition.onend = function() {
+        isRecognizing = false;
+        document.getElementById('mic-btn-text').innerText = "Start Speech Input";
+        document.getElementById('mic-btn').classList.replace('bg-red-600', 'bg-montano-blue');
+      };
+    }
+
+    function toggleSpeechRecognition() {
+      if (!recognition) {
+        alert("Speech Recognition API is not supported in this browser. You can type your response manually!");
+        return;
+      }
+      if (isRecognizing) {
+        recognition.stop();
+      } else {
+        recognition.start();
+      }
+    }
+
+    /* Introspection Evaluator */
+    function evaluateIntrospection() {
+      const input = document.getElementById('voice-transcript-input').value.trim();
+      if (!input) {
+        alert("Please speak or type your introspection response first!");
+        return;
+      }
+
+      const keyWordsList = ["sensation", "feeling", "sound", "rhythm", "pitch", "vibration", "conscious", "experience", "intensity", "alert", "mind", "tone"];
+      const lowerInput = input.toLowerCase();
+      let matched = keyWordsList.filter(kw => lowerInput.includes(kw));
+
+      let precisionScore = Math.min(100, Math.max(40, input.length * 1.8));
+      let terminologyScore = matched.length > 0 ? Math.min(100, matched.length * 30 + 30) : 40;
+      let objectivityScore = (!lowerInput.includes("clock") && !lowerInput.includes("metronome")) ? 90 : 60; // Wundt discouraged naming objects (stimulus error)
+
+      document.getElementById('score-clarity').innerText = `${Math.round(precisionScore)}%`;
+      document.getElementById('bar-clarity').style.width = `${Math.round(precisionScore)}%`;
+
+      document.getElementById('score-accuracy').innerText = `${Math.round(terminologyScore)}%`;
+      document.getElementById('bar-accuracy').style.width = `${Math.round(terminologyScore)}%`;
+
+      document.getElementById('score-etiquette').innerText = `${Math.round(objectivityScore)}%`;
+      document.getElementById('bar-etiquette').style.width = `${Math.round(objectivityScore)}%`;
+
+      const kwContainer = document.getElementById('detected-keywords');
+      if (matched.length > 0) {
+        kwContainer.innerHTML = matched.map(m => `<span class="text-[10px] bg-montano-blue/10 text-montano-blue font-bold px-2 py-0.5 rounded-full">${m}</span>`).join(' ');
+      } else {
+        kwContainer.innerHTML = `<span class="text-[10px] bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded-full">General vocabulary detected</span>`;
+      }
+
+      const feedbackBox = document.getElementById('ai-feedback-container');
+      const feedbackText = document.getElementById('ai-feedback-text');
+      feedbackBox.classList.remove('hidden');
+
+      if (objectivityScore >= 80) {
+        feedbackText.innerHTML = `<strong class="text-emerald-600"><i class="fa-solid fa-circle-check"></i> Excellent Structuralist Analysis!</strong> You described pure sensory feelings without making a 'stimulus error' (naming the object itself).`;
+        speakText("Excellent introspection! You accurately described sensory components.");
+      } else {
+        feedbackText.innerHTML = `<strong class="text-amber-600"><i class="fa-solid fa-circle-exclamation"></i> Wundt's Caution:</strong> Try describing raw sensations (pitch, duration) rather than stating the physical object name.`;
+        speakText("Remember Wundt encouraged describing raw sensations rather than physical object labels.");
+      }
+    }
+
+    /* Tab 4 Timeline Data */
+    const timelineData = {
+      1: {
+        title: "400 BCE: Ancient Greece — Socrates, Plato & Aristotle",
+        desc: "Socrates and Plato argued that knowledge is innate and that the mind is separable from the body. Aristotle later proposed that knowledge grows from experiences stored in memory.",
+        impact: "Key Contribution: Posed the earliest structured questions regarding human nature, memory, and perception."
+      },
+      2: {
+        title: "1641: René Descartes — Interactive Dualism",
+        desc: "Published his meditations introducing Interactive Dualism, theorizing that the non-physical mind and physical body communicate through the brain's pineal gland.",
+        impact: "Key Contribution: Linked mental function to biological neural mechanisms."
+      },
+      3: {
+        title: "1690: John Locke — An Essay Concerning Human Understanding",
+        desc: "Introduced Empirical philosophy and the 'Tabula Rasa' (blank slate), asserting that all knowledge arises from sensory experience rather than innate concepts.",
+        impact: "Key Contribution: Championed observational evidence, laying the philosophical foundation for scientific methodology."
+      },
+      4: {
+        title: "1879: Wilhelm Wundt — Leipzig Experimental Laboratory",
+        desc: "Established the world's first formal experimental psychology laboratory in Leipzig, Germany. Used introspection to measure basic mental reaction times and conscious structures.",
+        impact: "Key Contribution: Officially established psychology as an independent scientific discipline distinct from philosophy."
+      }
+    };
+
+    let activeTimelineStep = 1;
+
+    function setTimelineStep(step) {
+      activeTimelineStep = step;
+      for (let i = 1; i <= 4; i++) {
+        const btn = document.getElementById(`time-step-${i}`);
+        if (i === step) {
+          btn.className = "p-3 rounded-xl border text-center transition font-bold text-xs bg-montano-blue text-white";
+        } else {
+          btn.className = "p-3 rounded-xl border text-center transition font-bold text-xs bg-slate-100 text-slate-700 hover:bg-slate-200";
+        }
+      }
+
+      document.getElementById('timeline-title').innerText = timelineData[step].title;
+      document.getElementById('timeline-desc').innerText = timelineData[step].desc;
+      document.getElementById('timeline-impact').innerHTML = `<strong>Key Contribution:</strong> ${timelineData[step].impact}`;
+    }
+
+    function speakCurrentTimeline() {
+      speakText(`${timelineData[activeTimelineStep].title}. ${timelineData[activeTimelineStep].desc}`);
+    }
+
+    /* Tab 5 Exit Ticket Handler */
+    function submitExitTicketC3(e) {
+      e.preventDefault();
+      const q1 = document.getElementById('et3-q1').value;
+      const q2 = document.getElementById('et3-q2').value;
+
+      const feedbackBox = document.getElementById('exit-feedback-c3');
+      const feedbackMsg = document.getElementById('exit-feedback-msg-c3');
+
+      feedbackBox.classList.remove('hidden');
+      feedbackMsg.innerText = `Excellent synthesis! You clearly demonstrated how psychology evolved from philosophical roots (Descartes & Locke) to Wilhelm Wundt's experimental science in 1879. Your responses have been saved.`;
+    }
+  </script>
+</body>
+</html>
